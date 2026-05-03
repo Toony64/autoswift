@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réservation — AUTOSWIFT64 | Nettoyage Auto à Domicile</title>
+<meta name="description" content="Réservez votre rendez-vous AutoSwift64 en 3 minutes. Nettoyage automobile à domicile. Réponse sous 24h.">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f5f0;
+    --red: #ff1f3d;
+    --grey: #1a1a1a;
+    --grey-2: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* === NAV simplifiée === */
+  nav {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--black);
+    color: var(--white);
+    border-bottom: 3px solid var(--red);
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    letter-spacing: -1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .logo-img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    display: block;
+    background: var(--black);
+    padding: 2px;
+  }
+
+  .logo-mark {
+    width: 26px;
+    height: 26px;
+    background: var(--red);
+    transform: skewX(-20deg);
+  }
+
+  .nav-back {
+    color: var(--white);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+
+  .nav-back:hover { color: var(--red); }
+
+  /* === HEADER de la page === */
+  .page-header {
+    background: var(--black);
+    color: var(--white);
+    padding: 80px 40px 100px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .page-watermark {
+    position: absolute;
+    top: 50%;
+    right: -120px;
+    transform: translateY(-50%) rotate(-15deg);
+    width: 450px;
+    height: 450px;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 1;
+    filter: brightness(0) invert(1);
+  }
+
+  .page-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 31, 61, 0.12) 1px, transparent 1px);
+    background-size: 30px 30px;
+    pointer-events: none;
+  }
+
+  .page-header-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .page-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  .page-tag::before, .page-tag::after {
+    content: '';
+    width: 30px;
+    height: 2px;
+    background: var(--red);
+  }
+
+  .page-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(40px, 7vw, 80px);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+  }
+
+  .page-title .red { color: var(--red); }
+
+  .page-subtitle {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(245, 245, 240, 0.7);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* === STEP INDICATORS === */
+  .steps-bar {
+    background: var(--white);
+    padding: 24px 40px;
+    border-bottom: 2px solid var(--black);
+    position: sticky;
+    top: 65px;
+    z-index: 50;
+  }
+
+  .steps-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    background: var(--white);
+    border: 2px solid var(--black);
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+
+  .step-item.active .step-num {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--white);
+    transform: scale(1.1);
+  }
+
+  .step-item.done .step-num {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .step-item.done .step-num::after {
+    content: '✓';
+  }
+
+  .step-item.done .step-num span {
+    display: none;
+  }
+
+  .step-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(10, 10, 10, 0.4);
+    font-family: 'Archivo Black', sans-serif;
+    transition: color 0.3s ease;
+  }
+
+  .step-item.active .step-label,
+  .step-item.done .step-label {
+    color: var(--black);
+  }
+
+  .step-divider {
+    flex-grow: 1;
+    height: 2px;
+    background: rgba(10, 10, 10, 0.1);
+    margin: 0 8px;
+    max-width: 60px;
+  }
+
+  /* === FORM CONTAINER === */
+  .form-page {
+    background: var(--white);
+    padding: 60px 40px 100px;
+    position: relative;
+  }
+
+  .form-container {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 3px solid var(--black);
+    padding: 50px;
+    position: relative;
+  }
+
+  .form-container::before {
+    content: '◣';
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    background: var(--red);
+    color: var(--white);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  /* === BLOCS DE STEPS === */
+  .form-step {
+    border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+    padding-bottom: 36px;
+    margin-bottom: 36px;
+  }
+
+  .form-step:last-of-type {
+    border-bottom: none;
+    margin-bottom: 24px;
+  }
+
+  .form-step-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .form-step-number {
+    width: 42px;
+    height: 42px;
+    background: var(--black);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .form-step-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+
+  .form-step-helper {
+    font-size: 12px;
+    color: rgba(10, 10, 10, 0.55);
+    margin-top: 4px;
+    font-style: italic;
+    letter-spacing: 0.3px;
+  }
+
+  /* === FORM ELEMENTS === */
+  .form-label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    display: block;
+    color: var(--red);
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 16px 0;
+    border: none;
+    border-bottom: 2px solid var(--black);
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    background: transparent;
+    color: var(--black);
+    outline: none;
+    margin-bottom: 22px;
+  }
+
+  .form-input::placeholder { color: rgba(10, 10, 10, 0.4); }
+  .form-input:focus { border-bottom-color: var(--red); }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .form-textarea {
+    width: 100%;
+    padding: 14px 0;
+    border: none;
+    border-bottom: 2px solid var(--black);
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    background: transparent;
+    outline: none;
+    margin-bottom: 22px;
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.6;
+  }
+
+  .form-textarea::placeholder { color: rgba(10, 10, 10, 0.4); }
+  .form-textarea:focus { border-bottom-color: var(--red); }
+
+  .required-mark { color: var(--red); margin-left: 2px; }
+
+  /* === SEGMENTED CONTROL === */
+  .segmented {
+    display: grid;
+    gap: 8px;
+  }
+
+  .segmented.cols-2 { grid-template-columns: 1fr 1fr; }
+  .segmented.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+  .seg-btn {
+    background: transparent;
+    border: 2px solid var(--black);
+    color: var(--black);
+    padding: 16px 8px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .seg-btn:hover:not(.selected) {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .seg-btn.selected {
+    background: var(--red);
+    color: var(--white);
+    border-color: var(--red);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 var(--black);
+  }
+
+  /* === OFFER CARDS === */
+  .offer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    position: relative;
+    margin-top: 32px;
+  }
+
+  .offer-grid::before {
+    content: 'TARIFS PARTICULIER';
+    position: absolute;
+    top: -22px;
+    right: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(10, 10, 10, 0.4);
+    transition: color 0.3s ease;
+  }
+
+  .offer-grid.mode-pro::before {
+    content: '✓ TARIFS PRO ACTIFS';
+    color: var(--red);
+    font-family: 'Archivo Black', sans-serif;
+  }
+
+  .offer-card {
+    background: transparent;
+    border: 2px solid var(--black);
+    padding: 20px 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .offer-card:hover:not(.selected) {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-3px);
+  }
+
+  .offer-card:hover:not(.selected) .offer-icon svg { stroke: var(--white); }
+  .offer-card:hover:not(.selected) .offer-price { color: var(--red); }
+
+  .offer-card.selected {
+    background: var(--red);
+    color: var(--white);
+    border-color: var(--red);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 0 var(--black);
+  }
+
+  .offer-card.selected .offer-icon svg { stroke: var(--white); }
+  .offer-card.selected .offer-price { color: var(--white); }
+
+  .offer-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    color: var(--white);
+  }
+
+  .offer-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .offer-icon svg {
+    width: 100%; height: 100%;
+    stroke: var(--black); fill: none;
+    stroke-width: 1.8;
+    transition: stroke 0.2s ease;
+  }
+
+  .offer-name {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+  }
+
+  .offer-price {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    color: var(--red);
+    transition: color 0.2s ease;
+  }
+
+  .offer-desc {
+    font-size: 9px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+  }
+
+  .price-value {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* === OPTIONS === */
+  .options-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  @media (max-width: 700px) {
+    .options-list { grid-template-columns: 1fr; }
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 2px solid rgba(10, 10, 10, 0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  @media (max-width: 700px) {
+    .option-item { flex-direction: row; text-align: left; }
+  }
+
+  .option-item:hover { border-color: var(--black); }
+  .option-item input[type="checkbox"] { display: none; }
+
+  .option-checkbox {
+    width: 22px; height: 22px;
+    border: 2px solid var(--black);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .option-item input[type="checkbox"]:checked ~ .option-checkbox {
+    background: var(--red); border-color: var(--red);
+  }
+
+  .option-item input[type="checkbox"]:checked ~ .option-checkbox::after {
+    content: '✓';
+    color: var(--white);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+  }
+
+  .option-item input[type="checkbox"]:checked ~ .option-label {
+    color: var(--red);
+  }
+
+  .option-item:has(input:checked) {
+    border-color: var(--red);
+    background: rgba(255, 31, 61, 0.04);
+  }
+
+  .option-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: color 0.2s ease;
+    font-weight: 700;
+  }
+
+  .option-meta {
+    font-size: 9px;
+    color: rgba(10, 10, 10, 0.5);
+    letter-spacing: 1px;
+  }
+
+  /* === DAY PICKER === */
+  .day-picker-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+  }
+
+  .day-picker-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: rgba(10, 10, 10, 0.6);
+    letter-spacing: 1px;
+  }
+
+  .day-picker-counter .count {
+    color: var(--red);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+  }
+
+  .day-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .day-btn {
+    aspect-ratio: 1;
+    background: transparent;
+    border: 2px solid var(--black);
+    color: var(--black);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .day-btn:hover:not(.disabled):not(.selected) {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .day-btn.selected {
+    background: var(--red);
+    color: var(--white);
+    border-color: var(--red);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 var(--black);
+  }
+
+  .day-btn.selected::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 6px;
+    height: 6px;
+    background: var(--white);
+    transform: rotate(45deg);
+  }
+
+  .day-btn.disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
+
+  .day-picker-helper {
+    font-size: 11px;
+    color: rgba(10, 10, 10, 0.5);
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  /* === SUBMIT === */
+  .form-submit {
+    width: 100%;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    padding: 24px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    cursor: pointer;
+    margin-top: 12px;
+    clip-path: polygon(3% 0, 100% 0, 97% 100%, 0 100%);
+    transition: background 0.2s;
+  }
+
+  .form-submit:hover { background: var(--red); }
+  .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .form-disclaimer {
+    font-size: 11px;
+    color: rgba(10, 10, 10, 0.5);
+    margin-top: 18px;
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* === FOOTER === */
+  footer {
+    background: var(--black);
+    color: var(--white);
+    padding: 30px 40px;
+    text-align: center;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(245, 245, 240, 0.5);
+  }
+
+  footer a {
+    color: var(--red);
+    text-decoration: none;
+  }
+
+  /* === ANIMATIONS BRUTALISTES === */
+  .anim-reveal,
+  .anim-slide-right,
+  .anim-clip-down,
+  .anim-fade-up,
+  .anim-fade-up-stagger > * {
+    opacity: 0;
+    will-change: opacity, transform, clip-path;
+  }
+
+  .anim-reveal.visible,
+  .anim-slide-right.visible,
+  .anim-fade-up.visible,
+  .anim-fade-up-stagger.visible > * {
+    opacity: 1;
+  }
+
+  .anim-reveal {
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .anim-reveal.visible { transform: translateY(0); }
+
+  .anim-slide-right {
+    transform: translateX(-50px);
+    transition: opacity 0.8s cubic-bezier(0.7, 0, 0.3, 1),
+                transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+  }
+  .anim-slide-right.visible { transform: translateX(0); }
+
+  .anim-clip-down {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.9s cubic-bezier(0.7, 0, 0.3, 1);
+  }
+  .anim-clip-down.visible { clip-path: inset(0 0 0% 0); opacity: 1; }
+
+  .anim-title-brutal {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: opacity 0.7s cubic-bezier(0.7, 0, 0.3, 1),
+                transform 0.9s cubic-bezier(0.7, 0, 0.3, 1);
+    will-change: transform, opacity;
+  }
+  .anim-title-brutal.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .anim-fade-up {
+    transform: translateY(40px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .anim-fade-up.visible { transform: translateY(0); }
+
+  .anim-fade-up-stagger > * {
+    transform: translateY(40px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .anim-fade-up-stagger.visible > * { transform: translateY(0); }
+  .anim-fade-up-stagger.visible > *:nth-child(1) { transition-delay: 0.05s; }
+  .anim-fade-up-stagger.visible > *:nth-child(2) { transition-delay: 0.15s; }
+  .anim-fade-up-stagger.visible > *:nth-child(3) { transition-delay: 0.25s; }
+  .anim-fade-up-stagger.visible > *:nth-child(4) { transition-delay: 0.35s; }
+  .anim-fade-up-stagger.visible > *:nth-child(5) { transition-delay: 0.45s; }
+
+  /* Animation du numéro de step quand actif */
+  @keyframes stepActivate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1.1); }
+  }
+
+  .step-item.active .step-num {
+    animation: stepActivate 0.4s ease;
+  }
+
+  /* Form step quand révélé : numéro saute */
+  @keyframes numberSlam {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .form-step.visible .form-step-number {
+    animation: numberSlam 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 700px) {
+    nav { padding: 14px 20px; }
+    .page-header { padding: 60px 20px 80px; }
+    .steps-bar { padding: 18px 20px; top: 60px; }
+    .step-label { display: none; }
+    .step-divider { max-width: none; }
+    .form-page { padding: 30px 16px 60px; }
+    .form-container { padding: 28px 22px; }
+    .form-step-title { font-size: 18px; }
+    .form-row { grid-template-columns: 1fr; gap: 0; }
+    .offer-grid { grid-template-columns: 1fr; gap: 8px; }
+    .offer-card {
+      flex-direction: row;
+      justify-content: flex-start;
+      padding: 14px 16px;
+      gap: 14px;
+      text-align: left;
+    }
+    .offer-card .offer-icon { width: 30px; height: 30px; }
+    .segmented.cols-4 { grid-template-columns: 1fr 1fr; }
+    .seg-btn { padding: 12px 6px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="index.html" class="logo">
+    <img src="images/logo.png" alt="AutoSwift Logo" class="logo-img">
+    AUTOSWIFT
+  </a>
+  <a href="index.html" class="nav-back">← Retour à l'accueil</a>
+</nav>
+
+<!-- HEADER -->
+<header class="page-header">
+  <img class="page-watermark" src="images/logo.png" alt="" aria-hidden="true">
+  <div class="page-header-inner anim-clip-down">
+    <div class="page-tag">Prise de rendez-vous</div>
+    <h1 class="page-title anim-title-brutal">VOTRE RDV<br><span class="red">EN MOINS DE 3 MIN.</span></h1>
+    <p class="page-subtitle">
+      Remplissez ce formulaire pour réserver. Anthony vous recontacte sous 24h pour confirmer le créneau exact.
+    </p>
+  </div>
+</header>
+
+<!-- STEPS -->
+<div class="steps-bar">
+  <div class="steps-inner anim-fade-up-stagger">
+    <div class="step-item" data-step="1"><div class="step-num"><span>1</span></div><div class="step-label">Profil</div></div>
+    <div class="step-divider"></div>
+    <div class="step-item" data-step="2"><div class="step-num"><span>2</span></div><div class="step-label">Coordonnées</div></div>
+    <div class="step-divider"></div>
+    <div class="step-item" data-step="3"><div class="step-num"><span>3</span></div><div class="step-label">Véhicule</div></div>
+    <div class="step-divider"></div>
+    <div class="step-item" data-step="4"><div class="step-num"><span>4</span></div><div class="step-label">Formule</div></div>
+    <div class="step-divider"></div>
+    <div class="step-item" data-step="5"><div class="step-num"><span>5</span></div><div class="step-label">Dispo</div></div>
+  </div>
+</div>
+
+<!-- FORM -->
+<main class="form-page">
+  <form class="form-container anim-reveal" id="rdvForm" action="https://formspree.io/f/xjglgyzb" method="POST">
+    <input type="hidden" name="_subject" value="🚗 Nouvelle demande de RDV — AutoSwift64">
+    <input type="hidden" name="_replyto" id="hiddenReplyto">
+
+    <!-- STEP 1 : PROFIL -->
+    <div class="form-step anim-fade-up" data-step="1">
+      <div class="form-step-header">
+        <div class="form-step-number">1</div>
+        <div>
+          <div class="form-step-title">Vous êtes...</div>
+          <div class="form-step-helper">Cela détermine la grille tarifaire appliquée.</div>
+        </div>
+      </div>
+      <div class="segmented cols-2" id="profileSeg">
+        <button type="button" class="seg-btn" data-profile="Particulier">Particulier</button>
+        <button type="button" class="seg-btn" data-profile="Professionnel">Professionnel</button>
+      </div>
+      <input type="hidden" name="profil" id="selectedProfile" value="">
+    </div>
+
+    <!-- STEP 2 : COORDONNÉES + ADRESSE -->
+    <div class="form-step anim-fade-up" data-step="2">
+      <div class="form-step-header">
+        <div class="form-step-number">2</div>
+        <div>
+          <div class="form-step-title">Vos coordonnées</div>
+          <div class="form-step-helper">Pour vous recontacter et planifier l'intervention chez vous.</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <input type="text" name="prenom" class="form-input" placeholder="Prénom *" required>
+        <input type="text" name="nom" class="form-input" placeholder="Nom *" required>
+      </div>
+      <div class="form-row">
+        <input type="tel" name="telephone" class="form-input" placeholder="06 XX XX XX XX *" pattern="[0-9 +]{10,15}" required>
+        <input type="email" name="email" class="form-input" placeholder="email@domaine.com *" required>
+      </div>
+      <input type="text" name="adresse" class="form-input" placeholder="Adresse complète *" required>
+      <div class="form-row">
+        <input type="text" name="code_postal" class="form-input" placeholder="Code postal *" pattern="[0-9]{5}" maxlength="5" required>
+        <input type="text" name="ville" class="form-input" placeholder="Ville *" required>
+      </div>
+    </div>
+
+    <!-- STEP 3 : VÉHICULE -->
+    <div class="form-step anim-fade-up" data-step="3">
+      <div class="form-step-header">
+        <div class="form-step-number">3</div>
+        <div>
+          <div class="form-step-title">Type de véhicule</div>
+          <div class="form-step-helper">Pour anticiper le temps d'intervention nécessaire.</div>
+        </div>
+      </div>
+      <div class="segmented cols-4" id="vehicleSeg">
+        <button type="button" class="seg-btn" data-vehicle="Citadine">Citadine</button>
+        <button type="button" class="seg-btn" data-vehicle="Berline">Berline</button>
+        <button type="button" class="seg-btn" data-vehicle="SUV / 4x4">SUV / 4×4</button>
+        <button type="button" class="seg-btn" data-vehicle="Utilitaire">Utilitaire</button>
+      </div>
+      <input type="hidden" name="type_vehicule" id="selectedVehicle" value="">
+    </div>
+
+    <!-- STEP 4 : FORMULE + OPTIONS -->
+    <div class="form-step anim-fade-up" data-step="4">
+      <div class="form-step-header">
+        <div class="form-step-number">4</div>
+        <div>
+          <div class="form-step-title">Choisissez votre formule</div>
+          <div class="form-step-helper">Les prix s'adaptent automatiquement à votre profil.</div>
+        </div>
+      </div>
+
+      <div class="offer-grid" id="offerGrid">
+        <div class="offer-card" data-offer="Swift I" data-price-particulier="69" data-price-pro="59">
+          <div class="offer-icon">
+            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 30 L10 22 Q10 18 14 18 L26 18 Q30 18 30 22 L30 30 Z"/>
+              <line x1="14" y1="14" x2="14" y2="18"/>
+              <circle cx="14" cy="12" r="2"/>
+              <line x1="20" y1="30" x2="20" y2="35"/>
+              <line x1="13" y1="35" x2="27" y2="35"/>
+            </svg>
+          </div>
+          <div class="offer-name">Swift I</div>
+          <div class="offer-price">dès <span class="price-value">69</span>€</div>
+          <div class="offer-desc">Aspiration · Tapis</div>
+        </div>
+
+        <div class="offer-card" data-offer="Swift II" data-price-particulier="89" data-price-pro="79">
+          <div class="offer-icon">
+            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 14 Q12 10 16 10 L24 10 Q28 10 28 14 L28 24 L12 24 Z"/>
+              <path d="M10 24 L30 24 L30 32 L10 32 Z"/>
+              <line x1="14" y1="14" x2="14" y2="22"/>
+              <line x1="26" y1="14" x2="26" y2="22"/>
+            </svg>
+          </div>
+          <div class="offer-name">Swift II</div>
+          <div class="offer-price">dès <span class="price-value">89</span>€</div>
+          <div class="offer-desc">+ Sièges · Vitres</div>
+        </div>
+
+        <div class="offer-card" data-offer="Swift III" data-price-particulier="119" data-price-pro="109">
+          <div class="offer-icon">
+            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 30 L14 24 Q14 18 20 18 Q26 18 26 24 L26 30 Z"/>
+              <line x1="14" y1="30" x2="26" y2="30"/>
+              <path d="M16 14 Q14 12 16 10 Q18 8 16 6"/>
+              <path d="M20 14 Q18 12 20 10 Q22 8 20 6"/>
+              <path d="M24 14 Q22 12 24 10 Q26 8 24 6"/>
+              <circle cx="20" cy="34" r="1.5" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div class="offer-name">Swift III</div>
+          <div class="offer-price">dès <span class="price-value">119</span>€</div>
+          <div class="offer-desc">+ Vapeur · Protection</div>
+        </div>
+      </div>
+      <input type="hidden" name="offre" id="selectedOffer" value="">
+
+      <label class="form-label" style="margin-top: 30px;">Options supplémentaires <span style="color: rgba(10,10,10,0.4); font-weight: normal;">(facultatif)</span></label>
+      <div class="options-list">
+        <label class="option-item">
+          <input type="checkbox" name="option_tabac" value="Oui">
+          <span class="option-checkbox"></span>
+          <span class="option-label">Tabac</span>
+          <span class="option-meta">SUR DEVIS</span>
+        </label>
+        <label class="option-item">
+          <input type="checkbox" name="option_odeurs" value="Oui">
+          <span class="option-checkbox"></span>
+          <span class="option-label">Fortes Odeurs</span>
+          <span class="option-meta">SUR DEVIS</span>
+        </label>
+        <label class="option-item">
+          <input type="checkbox" name="option_poils" value="Oui">
+          <span class="option-checkbox"></span>
+          <span class="option-label">Poils d'Animaux</span>
+          <span class="option-meta">SUR DEVIS</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- STEP 5 : DISPO -->
+    <div class="form-step anim-fade-up" data-step="5">
+      <div class="form-step-header">
+        <div class="form-step-number">5</div>
+        <div>
+          <div class="form-step-title">Vos disponibilités</div>
+          <div class="form-step-helper">Sélectionnez 1 à 3 jours qui vous arrangent. Anthony confirmera l'heure exacte par téléphone.</div>
+        </div>
+      </div>
+
+      <div class="day-picker-label">
+        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: rgba(10,10,10,0.6);">Jours préférés</span>
+        <span class="day-picker-counter"><span class="count" id="dayCount">0</span> / 3 jours max</span>
+      </div>
+
+      <div class="day-grid" id="dayGrid">
+        <button type="button" class="day-btn" data-day="Lundi">Lun</button>
+        <button type="button" class="day-btn" data-day="Mardi">Mar</button>
+        <button type="button" class="day-btn" data-day="Mercredi">Mer</button>
+        <button type="button" class="day-btn" data-day="Jeudi">Jeu</button>
+        <button type="button" class="day-btn" data-day="Vendredi">Ven</button>
+        <button type="button" class="day-btn" data-day="Samedi">Sam</button>
+        <button type="button" class="day-btn" data-day="Dimanche">Dim</button>
+      </div>
+      <input type="hidden" name="jours_disponibles" id="selectedDays" value="">
+
+      <label class="form-label" style="margin-top: 24px;">Message complémentaire <span style="color: rgba(10,10,10,0.4); font-weight: normal;">(facultatif)</span></label>
+      <textarea name="message" class="form-textarea" placeholder="Précisions, contraintes d'accès, état du véhicule, demandes spécifiques..."></textarea>
+    </div>
+
+    <button type="submit" class="form-submit" id="submitBtn">DEMANDER MON RDV →</button>
+    <p class="form-disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté par AutoSwift64 pour valider votre rendez-vous. Aucun spam, aucune diffusion à des tiers.</p>
+  </form>
+</main>
+
+<footer>
+  <div>© 2026 AUTOSWIFT64 — <a href="index.html">Retour à l'accueil</a> · <a href="tel:0625397984">06 25 39 79 84</a></div>
+</footer>
+
+<script>
+  // === ANIMATIONS AU SCROLL ===
+  document.addEventListener('DOMContentLoaded', function() {
+    const animSelectors = [
+      '.anim-reveal',
+      '.anim-slide-right',
+      '.anim-clip-down',
+      '.anim-title-brutal',
+      '.anim-fade-up',
+      '.anim-fade-up-stagger'
+    ];
+    const animatedElements = document.querySelectorAll(animSelectors.join(','));
+
+    if ('IntersectionObserver' in window) {
+      const animObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          } else {
+            entry.target.classList.remove('visible');
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -60px 0px'
+      });
+      animatedElements.forEach(el => animObserver.observe(el));
+    } else {
+      animatedElements.forEach(el => el.classList.add('visible'));
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // === SEGMENTED CONTROL ===
+    function setupSegmentedControl(containerId, hiddenInputId, dataAttr, onChange, stepNum) {
+      const buttons = document.querySelectorAll(`#${containerId} .seg-btn`);
+      const input = document.getElementById(hiddenInputId);
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          if (input) input.value = btn.dataset[dataAttr];
+          if (onChange) onChange(btn.dataset[dataAttr]);
+          if (stepNum) markStepDone(stepNum);
+        });
+      });
+    }
+
+    // === STEPS PROGRESS BAR ===
+    function markStepDone(stepNum) {
+      const items = document.querySelectorAll('.step-item');
+      items.forEach(item => {
+        const num = parseInt(item.dataset.step);
+        if (num <= stepNum) item.classList.add('done');
+      });
+      // Activer le step suivant
+      const next = document.querySelector(`.step-item[data-step="${stepNum + 1}"]`);
+      items.forEach(i => i.classList.remove('active'));
+      if (next) next.classList.add('active');
+    }
+
+    // Step 1 actif au démarrage
+    document.querySelector('.step-item[data-step="1"]').classList.add('active');
+
+    // === PRIX DYNAMIQUES ===
+    function updateOfferPrices(profile) {
+      const cards = document.querySelectorAll('.offer-card');
+      const isPro = profile === 'Professionnel';
+      cards.forEach(card => {
+        const priceSpan = card.querySelector('.price-value');
+        const newPrice = isPro ? card.dataset.pricePro : card.dataset.priceParticulier;
+        if (newPrice && priceSpan) {
+          priceSpan.style.transition = 'transform 0.25s ease, color 0.25s ease';
+          priceSpan.style.transform = 'scale(1.25)';
+          priceSpan.style.color = 'var(--red)';
+          setTimeout(() => {
+            priceSpan.textContent = newPrice;
+            priceSpan.style.transform = 'scale(1)';
+            setTimeout(() => { priceSpan.style.color = ''; }, 250);
+          }, 150);
+        }
+      });
+      const grid = document.getElementById('offerGrid');
+      if (grid) grid.classList.toggle('mode-pro', isPro);
+    }
+
+    setupSegmentedControl('profileSeg', 'selectedProfile', 'profile', updateOfferPrices, 1);
+    setupSegmentedControl('vehicleSeg', 'selectedVehicle', 'vehicle', null, 3);
+
+    // Step 2 done quand les coordonnées sont remplies
+    const requiredFields = document.querySelectorAll('.form-step[data-step="2"] input[required]');
+    requiredFields.forEach(f => {
+      f.addEventListener('blur', () => {
+        const allFilled = Array.from(requiredFields).every(field => field.value.trim() !== '');
+        if (allFilled) markStepDone(2);
+      });
+    });
+
+    // === DAY PICKER ===
+    const dayBtns = document.querySelectorAll('.day-btn');
+    const counter = document.getElementById('dayCount');
+    const selectedDaysInput = document.getElementById('selectedDays');
+    const MAX_DAYS = 3;
+
+    function updateDayState() {
+      const selected = Array.from(document.querySelectorAll('.day-btn.selected'));
+      const count = selected.length;
+      if (counter) counter.textContent = count;
+      if (selectedDaysInput) selectedDaysInput.value = selected.map(b => b.dataset.day).join(', ');
+      dayBtns.forEach(btn => {
+        if (!btn.classList.contains('selected')) {
+          btn.classList.toggle('disabled', count >= MAX_DAYS);
+        }
+      });
+      if (count > 0) markStepDone(5);
+    }
+
+    dayBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.classList.contains('selected')) {
+          btn.classList.remove('selected');
+        } else {
+          if (document.querySelectorAll('.day-btn.selected').length >= MAX_DAYS) return;
+          btn.classList.add('selected');
+        }
+        updateDayState();
+      });
+    });
+
+    // === OFFRE PICKER ===
+    const offerCards = document.querySelectorAll('.offer-card');
+    const selectedOfferInput = document.getElementById('selectedOffer');
+    offerCards.forEach(card => {
+      card.addEventListener('click', () => {
+        offerCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        if (selectedOfferInput) selectedOfferInput.value = card.dataset.offer;
+        markStepDone(4);
+      });
+    });
+
+    // === SOUMISSION ===
+    const form = document.getElementById('rdvForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const selectedProfile = document.getElementById('selectedProfile').value;
+      const selectedVehicle = document.getElementById('selectedVehicle').value;
+      const selectedOffer = selectedOfferInput.value;
+      const selectedDays = selectedDaysInput.value;
+
+      if (!selectedProfile) { flashButton(submitBtn, '⚠ INDIQUEZ VOTRE PROFIL', 2200); scrollToStep(1); return; }
+      if (!selectedVehicle) { flashButton(submitBtn, '⚠ TYPE DE VÉHICULE MANQUANT', 2400); scrollToStep(3); return; }
+      if (!selectedOffer) { flashButton(submitBtn, '⚠ CHOISISSEZ UNE FORMULE', 2200); scrollToStep(4); return; }
+      if (!selectedDays) { flashButton(submitBtn, '⚠ SÉLECTIONNEZ AU MOINS 1 JOUR', 2400); scrollToStep(5); return; }
+
+      const emailField = form.querySelector('input[name="email"]');
+      const replyTo = document.getElementById('hiddenReplyto');
+      if (emailField && replyTo) replyTo.value = emailField.value;
+
+      submitBtn.disabled = true;
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'ENVOI EN COURS...';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          // Redirection vers une page de confirmation simple ou message inline
+          submitBtn.textContent = '✓ DEMANDE ENVOYÉE !';
+          submitBtn.style.background = '#ff1f3d';
+          // Message de confirmation visuel
+          setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.querySelector('.page-title').innerHTML = 'MERCI !<br><span class="red">À TRÈS VITE.</span>';
+            document.querySelector('.page-subtitle').textContent = 'Votre demande est bien envoyée. Anthony vous recontacte sous 24h pour confirmer le créneau exact.';
+            document.querySelector('.form-page').innerHTML = '<div style="max-width: 600px; margin: 0 auto; text-align: center; padding: 40px; border: 3px solid var(--red); background: var(--white);"><div style="font-family: Archivo Black, sans-serif; font-size: 80px; color: var(--red); line-height: 1; margin-bottom: 20px;">✓</div><div style="font-family: Archivo Black, sans-serif; font-size: 22px; text-transform: uppercase; margin-bottom: 16px;">Demande reçue</div><p style="margin-bottom: 30px; line-height: 1.7; color: rgba(10,10,10,0.7);">Anthony a reçu votre demande. Vous serez contacté sous 24h au numéro indiqué.</p><a href="index.html" style="display: inline-block; background: var(--black); color: var(--white); padding: 18px 36px; text-decoration: none; font-family: Archivo Black, sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 3px;">Retour à l\'accueil →</a></div>';
+          }, 1200);
+        } else {
+          throw new Error('Erreur');
+        }
+      } catch (err) {
+        submitBtn.textContent = '✗ ERREUR — RÉESSAYEZ';
+        submitBtn.style.background = '#000';
+        setTimeout(() => {
+          submitBtn.textContent = originalText;
+          submitBtn.style.background = '';
+          submitBtn.disabled = false;
+        }, 3000);
+      }
+    });
+
+    function flashButton(btn, msg, duration) {
+      const original = btn.textContent;
+      btn.textContent = msg;
+      setTimeout(() => { btn.textContent = original; }, duration);
+    }
+
+    function scrollToStep(num) {
+      const el = document.querySelector(`.form-step[data-step="${num}"]`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+</script>
+
+</body>
+</html>
